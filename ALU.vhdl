@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+--use IEEE.std_logic_signed.all;
 use IEEE.numeric_std.all;
 
 entity alu is
@@ -17,20 +18,20 @@ port(	x, y : in std_logic_vector(31 downto 0);
 end alu ;
 
 
-architecture behavioural of alu is
+architecture alu_arch of alu is
 signal sum_dif : std_logic_vector(31 downto 0);
 signal logic_gate_output : std_logic_vector(31 downto 0);
 begin
-	process (x, y, add_sub)               --32 bit Adder
-		begin
-			case add_sub is
-			when '0' => sum_dif <= signed(x) + signed(y);
-			when others => sum_dif <= signed(x) - signed(y);
-			end case;
-	end process;
+process (x, y, add_sub)               --32 bit Adder
+	begin
+		case add_sub is
+		when '0' => sum_dif <= std_logic_vector(signed(x) + signed(y));
+		when others => sum_dif <= std_logic_vector(signed(x) - signed(y));
+		end case;
+end process;
 
 process (x , y, logic_func)
-	begin                                        --32 bit logic
+	begin                                          --32 bit logic
 		case logic_func is 
 			when "00" => logic_gate_output <= x and y;
 			when "01" => logic_gate_output <= x or y;
@@ -41,52 +42,32 @@ end process;
 
 process (sum_dif)                 --Zero check
 	begin
-		if sum_dif = x"00" then
-			z <= '1';
+		if sum_dif = x"00000000" then
+			zero <= '1';
 		else
-			z <= '0';
+			zero <= '0';
 		end if;
 end process;
 	
 process (x, y, sum_dif, add_sub)	--overflow check
 	begin
-		 if (add_sub = '0' and x(31)=y(31) and sum_dif /= x(31) or
-		 add_sub = '1' and x(31)/=y(31) and sum_dif /= x(31) then overflow <= '1';
-		 else overflow <='0';
-		 end if;
+	if (add_sub='0' and x(31)=y(31) and sum_dif(31)/=x(31)) or
+                            (add_sub='1' and x(31)/=y(31) and sum_dif(31)/=x(31)) then
+							overflow    <= '1'
+		   else overflow <='0';
+		   end if;
 end process;
 
-process (y, sum_dif, logic_gate_output   --final multiplexing for output
+process (y, sum_dif, logic_gate_output)  --final multiplexing for output
 	begin
 		case func is 
 			when "00" => output <= y;
-			when "01" => output <= not (sum_dif(31) or x"00");
+			when "01" => output <= sum_dif(31)&"0000000000000000000000000000000";
 			when "10" => output <= sum_dif;
-			when "11" => output<= logic_gate_output;
+			when others => output<= logic_gate_output;
 		end case;
-	end process
+end process;
 
-end behavioural;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end alu_arch;
 
 

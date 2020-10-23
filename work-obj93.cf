@@ -1,0 +1,4 @@
+v 4
+file . "alu.vhdl" "6520dca9724f77978d98f86a157a9abe09fa3a18" "20201013000421.099":
+  entity alu at 1( 0) + 0 on 11;
+  architecture alu_arch of alu at 21( 562) + 0 on 12;

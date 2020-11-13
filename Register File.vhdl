@@ -29,15 +29,15 @@ begin
 	end if;
 	if clk'event and clk ='1' then
 		if write = '1' then 
-			reg(to_integer(signed (write_address))) <= din ;
+			reg(to_integer(unsigned (write_address))) <= din ;
 		end if;
 	end if;
 end process;
 	
 process (read_a, read_b)
 begin
-	out_a <= reg(to_integer(signed (read_a)));  
-	out_b <= reg(to_integer(signed(read_b)));
+	out_a <= reg(to_integer(unsigned (read_a)));  
+	out_b <= reg(to_integer(unsigned(read_b)));
 end process;
 
 end registers_file_arch;

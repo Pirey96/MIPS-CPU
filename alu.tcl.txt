@@ -7,6 +7,7 @@
 #Then issue the following command from the Linux prompt:
 # vivado -log tedcircuit.log -mode batch -source tedcircuit_script.tcl
 # read in the VHDL source code files and the xdc constraints file
+set_property SEVERITY {Warning} [get_drc_checks UCIO-1]  #nstd1-1?
 read_vhdl  {alu.vhd}
 read_xdc alu.xdc
 # the -top refers to the top level VHDL entity name

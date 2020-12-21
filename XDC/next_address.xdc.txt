@@ -1,0 +1,15 @@
+# must use XDC syntax
+# Kandavanam Pireyatharsan
+# october 11, 2020
+# XDC file for alu.vhd
+
+set_property  IOSTANDARD LVCMOS33  [ get_ports { rt }  ] ;   #in
+set_property  IOSTANDARD LVCMOS33  [ get_ports { rs }  ] ;   #in
+set_property  IOSTANDARD LVCMOS33  [ get_ports { pc }  ] ;  #in
+set_property  IOSTANDARD LVCMOS33  [ get_ports { target_address }  ] ;  #in
+set_property  IOSTANDARD LVCMOS33  [get_ports { branch_type }]; #in
+set_property  IOSTANDARD LVCMOS33  [get_ports { pc_sel }]; #in 
+
+set_property IOSTANDARD LVCMOS33  [ get_ports { next_pc }  ] ; #out
+
+
